@@ -22,7 +22,6 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	}
 	
 	@Override
-	@Transactional
 	public void delete(Integer employeeId) {
 		Employee employee = findById(employeeId);
 		entityManager.remove(employee);
@@ -44,14 +43,14 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	}
 	
 	@Override
-	public void save(Employee employee) {
-		// TODO Auto-generated method stub
-		
+	public Employee save(Employee employee) {
+		Employee dbEmployee = entityManager.merge(employee);
+		return dbEmployee;
 	}
 	
 	@Override
-	public void update(Employee employee) {
-		// TODO Auto-generated method stub
-		
+	public Employee update(Employee employee) {
+		Employee dbEmployee = entityManager.merge(employee);
+		return dbEmployee;
 	}
 }

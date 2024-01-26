@@ -5,7 +5,7 @@ import java.util.List;
 import com.example.dimaspramantya.springrestcrud.entity.Employee;
 
 public interface EmployeeDao {
-	void save(Employee employee);
+	Employee save(Employee employee);
 	
 	Employee findById(Integer employeeId);
 	
@@ -13,5 +13,5 @@ public interface EmployeeDao {
 	
 	void delete(Integer employeeId);
 	
-	void update(Employee employee);
+	Employee update(Employee employee);
 }

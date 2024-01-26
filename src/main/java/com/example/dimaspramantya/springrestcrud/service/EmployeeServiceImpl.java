@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.example.dimaspramantya.springrestcrud.dao.EmployeeDao;
 import com.example.dimaspramantya.springrestcrud.entity.Employee;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -26,5 +28,23 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public Employee findById(Integer employeeId) {
 		return employeeDao.findById(employeeId);
+	}
+	
+	@Override
+	@Transactional
+	public Employee save(Employee employee) {
+		return employeeDao.save(employee);
+	}
+	
+	@Override
+	@Transactional
+	public Employee update(Employee employee) {
+		return employeeDao.update(employee);
+	}
+	
+	@Override
+	@Transactional
+	public void delete(Integer employeeId) {
+		employeeDao.delete(employeeId);
 	}
 }
