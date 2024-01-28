@@ -36,10 +36,8 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	
 	@Override
 	public Employee findById(Integer employeeId) {
-		TypedQuery<Employee> query = entityManager.createQuery("SELECT e FROM Employee e"
-				+ " Where e.id = :employeeId", Employee.class);
-		query.setParameter("employeeId", employeeId);
-		return query.getSingleResult();
+		Employee employee = entityManager.find(Employee.class, employeeId);
+		return employee;
 	}
 	
 	@Override
@@ -53,4 +51,6 @@ public class EmployeeDaoImpl implements EmployeeDao{
 		Employee dbEmployee = entityManager.merge(employee);
 		return dbEmployee;
 	}
+	
+	
 }
