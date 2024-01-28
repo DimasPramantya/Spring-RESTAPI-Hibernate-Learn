@@ -1,11 +1,14 @@
 package com.example.dimaspramantya.springrestcrud.service;
 
 import java.util.List;
+import java.util.Optional;
+
+import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.dimaspramantya.springrestcrud.dao.EmployeeDao;
+import com.example.dimaspramantya.springrestcrud.dao.EmployeeRepository;
 import com.example.dimaspramantya.springrestcrud.entity.Employee;
 
 import jakarta.transaction.Transactional;
@@ -13,38 +16,42 @@ import jakarta.transaction.Transactional;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-	private EmployeeDao employeeDao;
+	private EmployeeRepository employeeRepository;
 	
 	@Autowired
-	public EmployeeServiceImpl(EmployeeDao employeeDao) {
-		this.employeeDao = employeeDao;
+	public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+		this.employeeRepository = employeeRepository;
 	}
 	
 	@Override
 	public List<Employee> findAll() {
-		return employeeDao.findAll();
+		return employeeRepository.findAll();
 	}
 	
 	@Override
 	public Employee findById(Integer employeeId) {
-		return employeeDao.findById(employeeId);
+		Optional<Employee> result = employeeRepository.findById(employeeId);
+		
+		if(!result.isPresent()) {
+			throw new RuntimeException("Employee with id of - " + employeeId 
+					+ " NOT FOUND!");
+		}
+		
+		return result.get();
 	}
 	
 	@Override
-	@Transactional
 	public Employee save(Employee employee) {
-		return employeeDao.save(employee);
+		return employeeRepository.save(employee);
 	}
 	
 	@Override
-	@Transactional
 	public Employee update(Employee employee) {
-		return employeeDao.update(employee);
+		return employeeRepository.save(employee);
 	}
 	
 	@Override
-	@Transactional
 	public void delete(Integer employeeId) {
-		employeeDao.delete(employeeId);
+		employeeRepository.deleteById(employeeId);
 	}
 }
