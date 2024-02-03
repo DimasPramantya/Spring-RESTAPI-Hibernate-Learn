@@ -12,11 +12,16 @@ public class RestExceptionHandler {
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleException(Exception exc){
 		ErrorResponse errorResponse = new ErrorResponse();
-		errorResponse.setMessage(exc.getMessage());
-		errorResponse.setStatus("Error");
-		errorResponse.setTimeStamp(System.currentTimeMillis());
+		errorResponse.message = exc.getMessage();
+		errorResponse.status = "Error";
+		errorResponse.timeStamp = System.currentTimeMillis();
 		
 		return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleCustomException(CustomErrorException exc){
+		return new ResponseEntity<>(exc.response, exc.getStatusCode());
 	}
 	
 	
