@@ -6,10 +6,12 @@ import java.util.Optional;
 import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.example.dimaspramantya.springrestcrud.dao.EmployeeRepository;
 import com.example.dimaspramantya.springrestcrud.entity.Employee;
+import com.example.dimaspramantya.springrestcrud.exception.CustomErrorException;
 
 import jakarta.transaction.Transactional;
 
@@ -33,8 +35,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Optional<Employee> result = employeeRepository.findById(employeeId);
 		
 		if(!result.isPresent()) {
-			throw new RuntimeException("Employee with id of - " + employeeId 
-					+ " NOT FOUND!");
+			CustomErrorException exc = new CustomErrorException("Employee with id - " + 
+					employeeId + " NOT FOUND!");
+			exc.setStatus("NOT FOUND!");
+			exc.setStatusCode(HttpStatus.NOT_FOUND);
+			throw exc;
 		}
 		
 		return result.get();
@@ -52,6 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	@Override
 	public void delete(Integer employeeId) {
-		employeeRepository.deleteById(employeeId);
+		Employee theEmployee = findById(employeeId);
+		employeeRepository.delete(theEmployee);
 	}
 }
